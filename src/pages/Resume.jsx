@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { Link } from 'react-router-dom';
 import { Menu, X, Github, Linkedin, Mail, Download, Palette, Sparkles, Briefcase, GraduationCap, Award, Star, TrendingUp, Zap, Target } from 'lucide-react';
-//Resume.jsx
+
 export default function Resume() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -23,83 +24,28 @@ export default function Resume() {
   }, []);
 
   const navLinks = [
-    { name: 'Home', href: '/' },
-    { name: 'About', href: '/about' },
-    { name: 'Projects', href: '/projects' },
-    { name: 'Resume', href: '/resume' },
-    { name: 'Contact', href: '/contact' }
+    { name: 'Home', path: '/' },
+    { name: 'About', path: '/about' },
+    { name: 'Projects', path: '/projects' },
+    { name: 'Resume', path: '/resume' },
+    { name: 'Contact', path: '/contact' }
   ];
-
-  const handleNavClick = () => {
-    setIsMenuOpen(false);
-  };
 
   const downloadResume = () => {
     const link = document.createElement('a');
-    link.href = '/Resume_Polo.pdf';   // make sure Resume_Polo.pdf is in your public/ folder
-    link.download = 'Resume_Polo.pdf'; // suggested filename
+    link.href = `${import.meta.env.BASE_URL}Resume_Polo.pdf`;
+    link.download = 'Resume_Polo.pdf';
     link.click();
   };
 
-
-  useEffect(() => {
-    if (!window.html2pdf) {
-      const script = document.createElement('script');
-      script.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js';
-      script.async = true;
-      document.body.appendChild(script);
-    }
-  }, []);
-
   // EDIT YOUR PERSONAL INFO HERE
   const personalInfo = {
-    name: ' RALFH ROLAN CO HERRERA', 
+    name: 'RALFH ROLAN CO HERRERA', 
     title: 'Freelance YouTube Thumbnail Designer',
     email: 'calcalan3@gmail.com',
-    phone: ' 09947091817',
+    phone: '09947091817',
     location: '3128 molave St. Manuguit Ext. Brgy. 202 Tondo NCR, city of Manila, First District.',
-    profileImage: '/ralfh.jpg' // Path to your image in public folder (e.g., '/profile.jpg' or '/assets/profile.jpg')
-  };
-
-  const handleImageUpload = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        setPersonalInfo(prev => ({ ...prev, profileImage: event.target.result }));
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
-  const handleImagePathEdit = () => {
-    setIsEditingImage(true);
-    setTempImagePath(personalInfo.profileImage);
-  };
-
-  const handleImagePathSave = () => {
-    setPersonalInfo(prev => ({ ...prev, profileImage: tempImagePath }));
-    setIsEditingImage(false);
-  };
-
-  const handleImagePathCancel = () => {
-    setTempImagePath(personalInfo.profileImage);
-    setIsEditingImage(false);
-  };
-
-  const handleNameEdit = () => {
-    setIsEditing(true);
-    setTempName(personalInfo.name);
-  };
-
-  const handleNameSave = () => {
-    setPersonalInfo(prev => ({ ...prev, name: tempName }));
-    setIsEditing(false);
-  };
-
-  const handleNameCancel = () => {
-    setTempName(personalInfo.name);
-    setIsEditing(false);
+    profileImage: `${import.meta.env.BASE_URL}ralfh.jpg`
   };
 
   const professionalSummary = `Creative and results-driven YouTube Thumbnail Designer with 3+ years of experience creating high-converting thumbnails for content creators across various niches. Specialized in designing eye-catching visuals that increase click-through rates by an average of 40%. Proven track record of helping channels grow from 1K to 100K+ subscribers through strategic visual branding and thumbnail optimization.`;
@@ -224,22 +170,26 @@ export default function Resume() {
       <nav className={`fixed top-0 w-full z-50 transition-all duration-300 ${scrolled ? 'bg-slate-900/80 backdrop-blur-lg shadow-lg' : 'bg-transparent'}`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4">
           <div className="flex items-center justify-between">
-            <a href="/" className="flex items-center space-x-2 group cursor-pointer">
+            <Link 
+              to="/" 
+              className="flex items-center space-x-2 group cursor-pointer"
+              onClick={() => setIsMenuOpen(false)}
+            >
               <span className="text-lg sm:text-xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
-                Resume
+                Portfolio
               </span>
-            </a>
+            </Link>
 
             <div className="hidden md:flex items-center space-x-1">
               {navLinks.map((link) => (
-                <a
+                <Link
                   key={link.name}
-                  href={link.href}
-                  className="px-4 py-2 rounded-lg hover:bg-white/10 transition-all duration-300 relative group"
+                  to={link.path}
+                  className="px-4 py-2 rounded-lg hover:bg-white/10 transition-all duration-300 relative group cursor-pointer"
                 >
                   <span className="relative z-10">{link.name}</span>
                   <div className="absolute inset-0 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg opacity-0 group-hover:opacity-100 blur transition-opacity duration-300" />
-                </a>
+                </Link>
               ))}
             </div>
 
@@ -254,14 +204,14 @@ export default function Resume() {
           {isMenuOpen && (
             <div className="md:hidden mt-4 space-y-2 pb-4">
               {navLinks.map((link) => (
-                <a
+                <Link
                   key={link.name}
-                  href={link.href}
-                  onClick={handleNavClick}
-                  className="block px-4 py-3 rounded-lg hover:bg-white/10 transition-all duration-300"
+                  to={link.path}
+                  onClick={() => setIsMenuOpen(false)}
+                  className="block px-4 py-3 rounded-lg hover:bg-white/10 transition-all duration-300 cursor-pointer"
                 >
                   {link.name}
-                </a>
+                </Link>
               ))}
             </div>
           )}
@@ -294,11 +244,11 @@ export default function Resume() {
           <div ref={resumeRef} className="bg-white/5 backdrop-blur-lg rounded-2xl p-6 sm:p-8 md:p-12 border border-white/10 space-y-8 animate-fade-in-delay-1">
             <div className="flex flex-col md:flex-row items-center md:items-start gap-6 pb-8 border-b border-white/10">
               <img 
-                src={personalInfo.profileImage} 
+                src={personalInfo.profileImage}
                 alt="Profile" 
                 className="w-32 h-32 rounded-full border-4 border-purple-500/50 object-cover"
                 onError={(e) => {
-                  e.target.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="128" height="128"%3E%3Crect width="128" height="128" fill="%239333ea"/%3E%3Ctext x="50%25" y="50%25" dominant-baseline="middle" text-anchor="middle" font-family="sans-serif" font-size="48" fill="white"%3EYN%3C/text%3E%3C/svg%3E';
+                  e.target.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="128" height="128"%3E%3Crect width="128" height="128" fill="%239333ea"/%3E%3Ctext x="50%25" y="50%25" dominant-baseline="middle" text-anchor="middle" font-family="sans-serif" font-size="48" fill="white"%3ERH%3C/text%3E%3C/svg%3E';
                 }}
               />
               <div className="flex-1 text-center md:text-left">
@@ -459,7 +409,7 @@ export default function Resume() {
                   <Linkedin className="w-5 h-5" />
                   <span>LinkedIn</span>
                 </a>
-                <a href={`mailto:calcalan3@gmail.com`}
+                <a href="mailto:calcalan3@gmail.com"
                    className="flex items-center space-x-2 px-4 py-2 bg-white/10 rounded-lg hover:bg-white/20 transition-all">
                   <Mail className="w-5 h-5" />
                   <span>Email</span>
@@ -469,7 +419,6 @@ export default function Resume() {
           </div>
         </div>
       </main>
-
     </div>
   );
 }

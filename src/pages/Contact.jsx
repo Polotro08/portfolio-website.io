@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Menu, X, Github, Linkedin, Mail, Send, MapPin, Phone, Code, Sparkles, CheckCircle } from 'lucide-react';
-//Contact.jsx
+
 export default function Contact() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -30,11 +30,11 @@ export default function Contact() {
   }, []);
 
   const navLinks = [
-    { name: 'Home', href: '/' },
-    { name: 'About', href: '/about' },
-    { name: 'Projects', href: '/projects' },
-    { name: 'Resume', href: '/resume' },
-    { name: 'Contact', href: '/contact' }
+    { name: 'Home', path: '/' },
+    { name: 'About', path: '/about' },
+    { name: 'Projects', path: '/projects' },
+    { name: 'Resume', path: '/resume' },
+    { name: 'Contact', path: '/contact' }
   ];
 
   const handleNavClick = () => {
@@ -68,13 +68,13 @@ export default function Contact() {
       icon: Mail,
       title: 'Email',
       content: 'calcalan3@gmail.com',
-      link: 'mailto:your.email@example.com'
+      link: 'mailto:calcalan3@gmail.com'
     },
     {
       icon: Phone,
       title: 'Phone',
       content: '09947091817',
-      link: 'tel:+15551234567'
+      link: 'tel:+639947091817'
     },
     {
       icon: MapPin,
@@ -116,7 +116,7 @@ export default function Contact() {
           <div className="flex items-center justify-between">
             <Link to="/" className="flex items-center space-x-2 group cursor-pointer">
               <span className="text-lg sm:text-xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
-               Contact
+                Portfolio
               </span>
             </Link>
 
@@ -124,7 +124,7 @@ export default function Contact() {
               {navLinks.map((link) => (
                 <Link
                   key={link.name}
-                  to={link.href}
+                  to={link.path}
                   className="px-4 py-2 rounded-lg hover:bg-white/10 transition-all duration-300 relative group"
                 >
                   <span className="relative z-10">{link.name}</span>
@@ -146,7 +146,7 @@ export default function Contact() {
               {navLinks.map((link) => (
                 <Link
                   key={link.name}
-                  to={link.href}
+                  to={link.path}
                   onClick={handleNavClick}
                   className="block px-4 py-3 rounded-lg hover:bg-white/10 transition-all duration-300"
                 >
@@ -208,7 +208,7 @@ export default function Contact() {
                     <IconComponent className="w-6 h-6 sm:w-7 sm:h-7" />
                   </div>
                   <h3 className="text-lg sm:text-xl font-semibold mb-2">{info.title}</h3>
-                  <p className="text-gray-300 text-sm sm:text-base">{content}</p>
+                  <p className="text-gray-300 text-sm sm:text-base break-words">{content}</p>
                 </div>
               );
             })}
@@ -227,7 +227,7 @@ export default function Contact() {
                 </div>
               )}
 
-              <div className="space-y-4 sm:space-y-6">
+              <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
                 <div className="grid sm:grid-cols-2 gap-4 sm:gap-6">
                   <div>
                     <label htmlFor="name" className="block text-sm font-medium mb-2">
@@ -239,6 +239,7 @@ export default function Contact() {
                       name="name"
                       value={formData.name}
                       onChange={handleChange}
+                      required
                       className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all"
                       placeholder="John Doe"
                     />
@@ -254,6 +255,7 @@ export default function Contact() {
                       name="email"
                       value={formData.email}
                       onChange={handleChange}
+                      required
                       className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all"
                       placeholder="john@example.com"
                     />
@@ -270,6 +272,7 @@ export default function Contact() {
                     name="subject"
                     value={formData.subject}
                     onChange={handleChange}
+                    required
                     className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all"
                     placeholder="Project Inquiry"
                   />
@@ -284,6 +287,7 @@ export default function Contact() {
                     name="message"
                     value={formData.message}
                     onChange={handleChange}
+                    required
                     rows="6"
                     className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all resize-none"
                     placeholder="Tell me about your project..."
@@ -291,7 +295,7 @@ export default function Contact() {
                 </div>
 
                 <button
-                  onClick={handleSubmit}
+                  type="submit"
                   disabled={formStatus === 'sending'}
                   className="group relative w-full px-8 py-4 bg-gradient-to-r from-purple-500 to-pink-500 rounded-xl font-semibold overflow-hidden transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-purple-500/50 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
@@ -301,7 +305,7 @@ export default function Contact() {
                   </span>
                   <div className="absolute inset-0 bg-gradient-to-r from-pink-500 to-purple-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 </button>
-              </div>
+              </form>
             </div>
 
             {/* Social Links */}
@@ -369,7 +373,6 @@ export default function Contact() {
           </div>
         </div>
       </main>
-
     </div>
   );
 }

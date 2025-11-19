@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Menu, X, Github, Linkedin, Mail, Code, BookOpen, Briefcase, Heart, Sparkles, Award, GraduationCap, CookingPot, Music, Monitor, Gamepad2, Palette, Youtube } from 'lucide-react';
-//About.jsx
+import { Menu, X, Github, Linkedin, Mail, BookOpen, Briefcase, Heart, Sparkles, Award, GraduationCap, CookingPot, Music, Monitor, Gamepad2 } from 'lucide-react';
+
 export default function About() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -23,16 +23,12 @@ export default function About() {
   }, []);
 
   const navLinks = [
-    { name: 'Home', href: '/' },
-    { name: 'About', href: '/about' },
-    { name: 'Projects', href: '/projects' },
-    { name: 'Resume', href: '/resume' },
-    { name: 'Contact', href: '/contact' }
+    { name: 'Home', path: '/' },
+    { name: 'About', path: '/about' },
+    { name: 'Projects', path: '/projects' },
+    { name: 'Resume', path: '/resume' },
+    { name: 'Contact', path: '/contact' }
   ];
-
-  const handleNavClick = () => {
-    setIsMenuOpen(false);
-  };
 
   const skills = [
     { name: 'Photoshop', level: 95, color: 'from-blue-500 to-cyan-500' },
@@ -92,9 +88,13 @@ export default function About() {
       <nav className={`fixed top-0 w-full z-50 transition-all duration-300 ${scrolled ? 'bg-slate-900/80 backdrop-blur-lg shadow-lg' : 'bg-transparent'}`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4">
           <div className="flex items-center justify-between">
-            <Link to="/" className="flex items-center space-x-2 group cursor-pointer">
+            <Link 
+              to="/" 
+              className="flex items-center space-x-2 group cursor-pointer"
+              onClick={() => setIsMenuOpen(false)}
+            >
               <span className="text-lg sm:text-xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
-                About
+                Portfolio
               </span>
             </Link>
 
@@ -102,8 +102,8 @@ export default function About() {
               {navLinks.map((link) => (
                 <Link
                   key={link.name}
-                  to={link.href}
-                  className="px-4 py-2 rounded-lg hover:bg-white/10 transition-all duration-300 relative group"
+                  to={link.path}
+                  className="px-4 py-2 rounded-lg hover:bg-white/10 transition-all duration-300 relative group cursor-pointer"
                 >
                   <span className="relative z-10">{link.name}</span>
                   <div className="absolute inset-0 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg opacity-0 group-hover:opacity-100 blur transition-opacity duration-300" />
@@ -124,9 +124,9 @@ export default function About() {
               {navLinks.map((link) => (
                 <Link
                   key={link.name}
-                  to={link.href}
-                  onClick={handleNavClick}
-                  className="block px-4 py-3 rounded-lg hover:bg-white/10 transition-all duration-300"
+                  to={link.path}
+                  onClick={() => setIsMenuOpen(false)}
+                  className="block px-4 py-3 rounded-lg hover:bg-white/10 transition-all duration-300 cursor-pointer"
                 >
                   {link.name}
                 </Link>
@@ -306,7 +306,7 @@ export default function About() {
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                 <Link
                   to="/contact"
-                  className="px-8 py-4 bg-gradient-to-r from-purple-500 to-pink-500 rounded-xl font-semibold hover:scale-105 transition-all duration-300 hover:shadow-2xl hover:shadow-purple-500/50"
+                  className="px-8 py-4 bg-gradient-to-r from-purple-500 to-pink-500 rounded-xl font-semibold hover:scale-105 transition-all duration-300 hover:shadow-2xl hover:shadow-purple-500/50 cursor-pointer"
                 >
                   Get In Touch
                 </Link>
@@ -315,7 +315,7 @@ export default function About() {
                      className="w-12 h-12 bg-white/10 backdrop-blur-sm rounded-lg flex items-center justify-center hover:bg-purple-500 transition-all duration-300 hover:scale-110">
                     <Github className="w-6 h-6" />
                   </a>
-                  <a href="https://www.linkedin.com/in/ralfh-herrera-806b9b349  " target="_blank" rel="noopener noreferrer"
+                  <a href="https://www.linkedin.com/in/ralfh-herrera-806b9b349" target="_blank" rel="noopener noreferrer"
                      className="w-12 h-12 bg-white/10 backdrop-blur-sm rounded-lg flex items-center justify-center hover:bg-purple-500 transition-all duration-300 hover:scale-110">
                     <Linkedin className="w-6 h-6" />
                   </a>

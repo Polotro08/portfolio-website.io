@@ -1,17 +1,16 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Link } from 'react-router-dom';
-import { Menu, X, Github, Linkedin, Mail, Download, ArrowRight, Code, Sparkles } from 'lucide-react';
-
+import { Link, useNavigate } from 'react-router-dom';
+import { Menu, X, Github, Linkedin, Mail, Download, ArrowRight, Sparkles } from 'lucide-react';
+//Home.jsx
 const InteractiveAvatar = () => {
   const [rotation, setRotation] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
-  const [direction, setDirection] = useState(1); // 1 for clockwise, -1 for counter-clockwise
+  const [direction, setDirection] = useState(1);
   const containerRef = useRef(null);
   const startAngleRef = useRef(0);
   const animationRef = useRef(null);
   const lastTimeRef = useRef(Date.now());
 
-  // Auto-rotation effect
   useEffect(() => {
     if (!isDragging) {
       const animate = () => {
@@ -29,7 +28,6 @@ const InteractiveAvatar = () => {
 
       animationRef.current = requestAnimationFrame(animate);
 
-      // Change direction every 1.5 seconds
       const directionInterval = setInterval(() => {
         setDirection(prev => -prev);
       }, 1500);
@@ -163,9 +161,13 @@ const InteractiveAvatar = () => {
 
         <div className="relative w-40 h-40 sm:w-48 sm:h-48 rounded-full overflow-hidden border-4 border-white/20 shadow-2xl backdrop-blur-sm bg-gradient-to-br from-purple-500/20 to-pink-500/20 z-10">
           <img 
-            src="/ralfh.jpg" 
+            src={`${import.meta.env.BASE_URL}ralfh.jpg`}
             alt="Profile" 
             className="w-full h-full object-cover"
+            onError={(e) => {
+              console.error('Image failed to load:', e.target.src);
+              e.target.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"%3E%3Crect fill="%23a855f7" width="200" height="200"/%3E%3Ctext x="100" y="100" text-anchor="middle" dy=".3em" fill="white" font-size="20"%3EPhoto%3C/text%3E%3C/svg%3E';
+            }}
           />
         </div>
 
@@ -185,6 +187,7 @@ export default function Home() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
@@ -201,17 +204,13 @@ export default function Home() {
     };
   }, []);
 
- const navLinks = [
-  { name: 'Home', href: '/' },
-  { name: 'About', href: '/about' },
-  { name: 'Projects', href: '/projects' },
-  { name: 'Resume', href: '/resume' },
-  { name: 'Contact', href: '/contact' }
-];
-
-  const handleNavClick = () => {
-    setIsMenuOpen(false);
-  };
+  const navLinks = [
+    { name: 'Home', path: '/' },
+    { name: 'About', path: '/about' },
+    { name: 'Projects', path: '/projects' },
+    { name: 'Resume', path: '/resume' },
+    { name: 'Contact', path: '/contact' }
+  ];
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 text-white overflow-hidden relative">
@@ -240,9 +239,13 @@ export default function Home() {
       <nav className={`fixed top-0 w-full z-50 transition-all duration-300 ${scrolled ? 'bg-slate-900/80 backdrop-blur-lg shadow-lg' : 'bg-transparent'}`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4">
           <div className="flex items-center justify-between">
-            <Link to="/" className="flex items-center space-x-2 group cursor-pointer">
+            <Link 
+              to="/" 
+              className="flex items-center space-x-2 group cursor-pointer"
+              onClick={() => setIsMenuOpen(false)}
+            >
               <span className="text-lg sm:text-xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
-                Home
+                Portfolio
               </span>
             </Link>
 
@@ -250,8 +253,8 @@ export default function Home() {
               {navLinks.map((link) => (
                 <Link
                   key={link.name}
-                  to={link.href}
-                  className="px-4 py-2 rounded-lg hover:bg-white/10 transition-all duration-300 relative group"
+                  to={link.path}
+                  className="px-4 py-2 rounded-lg hover:bg-white/10 transition-all duration-300 relative group cursor-pointer"
                 >
                   <span className="relative z-10">{link.name}</span>
                   <div className="absolute inset-0 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg opacity-0 group-hover:opacity-100 blur transition-opacity duration-300" />
@@ -272,9 +275,9 @@ export default function Home() {
               {navLinks.map((link) => (
                 <Link
                   key={link.name}
-                  to={link.href}
-                  onClick={handleNavClick}
-                  className="block px-4 py-3 rounded-lg hover:bg-white/10 transition-all duration-300"
+                  to={link.path}
+                  onClick={() => setIsMenuOpen(false)}
+                  className="block px-4 py-3 rounded-lg hover:bg-white/10 transition-all duration-300 cursor-pointer"
                 >
                   {link.name}
                 </Link>
@@ -312,8 +315,8 @@ export default function Home() {
 
               <div className="flex flex-col sm:flex-row flex-wrap gap-3 sm:gap-4">
                 <Link
-                  to="/Contact"
-                  className="group relative px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-purple-500 to-pink-500 rounded-xl font-semibold overflow-hidden transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-purple-500/50 text-center"
+                  to="/contact"
+                  className="group relative px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-purple-500 to-pink-500 rounded-xl font-semibold overflow-hidden transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-purple-500/50 text-center cursor-pointer"
                 >
                   <span className="relative z-10 flex items-center justify-center space-x-2">
                     <span>Get In Touch</span>
@@ -323,8 +326,8 @@ export default function Home() {
                 </Link>
 
                 <Link
-                  to="/Resume"
-                  className="group px-6 sm:px-8 py-3 sm:py-4 bg-white/10 backdrop-blur-sm rounded-xl font-semibold border border-white/20 hover:bg-white/20 transition-all duration-300 hover:scale-105 text-center"
+                  to="/resume"
+                  className="group px-6 sm:px-8 py-3 sm:py-4 bg-white/10 backdrop-blur-sm rounded-xl font-semibold border border-white/20 hover:bg-white/20 transition-all duration-300 hover:scale-105 text-center cursor-pointer"
                 >
                   <span className="flex items-center justify-center space-x-2">
                     <Download className="w-4 h-4 sm:w-5 sm:h-5" />
@@ -377,7 +380,6 @@ export default function Home() {
           </div>
         </div>
       </main>
-
     </div>
   );
 }
